@@ -1,59 +1,81 @@
 package com.example.prepmate
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.prepmate.adapter.SearchItem
+import com.example.prepmate.adapter.SearchItemAdapter
+import com.example.prepmate.presenter.SearchPresenter
+import com.example.prepmate.presenter.SearchView
+import com.example.prepmate.repository.SearchRepository
+import com.google.android.material.chip.ChipGroup
+import com.google.android.material.textfield.TextInputEditText
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class SearchFragment : Fragment(), SearchView {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class SearchFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var searchAdapter: SearchItemAdapter
+    private lateinit var presenter: SearchPresenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val etSearch = view.findViewById<TextInputEditText>(R.id.etSearch)
+        val chipGroupFilters = view.findViewById<ChipGroup>(R.id.chipGroupFilters)
+        val rvSearchResults = view.findViewById<RecyclerView>(R.id.rvSearchResults)
+
+        // إعداد الـ Adapter والـ Presenter
+        searchAdapter = SearchItemAdapter()
+        rvSearchResults.layoutManager = GridLayoutManager(requireContext(), 2)
+        rvSearchResults.adapter = searchAdapter
+
+        presenter = SearchPresenter(this, SearchRepository())
+
+        // برمجة زراير الفلتر لتغيير الـ Hint وتحميل البيانات الحقيقية
+        chipGroupFilters.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (checkedIds.isNotEmpty()) {
+                when (checkedIds.first()) {
+                    R.id.chipCategory -> {
+                        etSearch.hint = "Search by Category"
+                        presenter.loadCategories() // تحميل التصنيفات
+                    }
+                    R.id.chipIngredient -> {
+                        etSearch.hint = "Search by Ingredient"
+                        presenter.loadIngredients() // تحميل المكونات
+                    }
+                    R.id.chipCountry -> {
+                        etSearch.hint = "Search by Country"
+                        presenter.loadCountries() // تحميل الدول
+                    }
                 }
             }
+        }
+
+        // تحميل التصنيفات كوضع افتراضي أول ما الشاشة تفتح
+        presenter.loadCategories()
+    }
+
+    override fun showSearchResults(items: List<SearchItem>) {
+        searchAdapter.updateItems(items)
+    }
+
+    override fun showError(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroyView() {
+        presenter.clear()
+        super.onDestroyView()
     }
 }
