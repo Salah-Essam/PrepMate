@@ -1,11 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.PrepMate" parent="Theme.Material3.Light.NoActionBar">
+    <!-- Base application theme. غيرنا الـ Parent لـ DayNight -->
+    <style name="Base.Theme.PrepMate" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- الألوان الأساسية -->
         <item name="colorPrimary">@color/primary_green</item>
         <item name="colorPrimaryVariant">@color/primary_green_dark</item>
         <item name="colorOnPrimary">@color/bg_white</item>
 
+        <!-- ألوان الخلفيات والنصوص للوضع الفاتح -->
         <item name="android:windowBackground">@color/bg_white</item>
+        <item name="colorSurface">@color/bg_white</item> <!-- لون خلفية الشاشات -->
+        <item name="colorOnSurface">#000000</item> <!-- لون النصوص (أسود) -->
+        <item name="colorSurfaceVariant">#F5F5F5</item> <!-- لون الكروت (رمادي فاتح جداً) -->
     </style>
 
     <style name="Theme.PrepMate" parent="Base.Theme.PrepMate" />

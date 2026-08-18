@@ -4,9 +4,13 @@
 
     <color name="primary_green_dark">#0E7A5F</color>
 
+    <color name="light_green">#7DFFD9</color>
+
     <color name="bg_white">#FFFFFF</color>
 
     <color name="card_bg_gray">#F6F6F6</color>
+
+    <color name="black">#000000</color>
 
     <color name="text_primary">#1E1E1E</color>
     <color name="text_secondary">#A9A9A9</color>

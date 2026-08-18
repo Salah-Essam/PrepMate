@@ -1,5 +1,6 @@
 package com.example.prepmate
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
@@ -17,7 +18,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-
     private lateinit var googleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 9001
 
@@ -53,6 +53,9 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
+                        // إلغاء حالة الزائر عند تسجيل الدخول بنجاح
+                        getSharedPreferences("AppPrefs", Context.MODE_PRIVATE).edit().putBoolean("isGuest", false).apply()
+
                         Toast.makeText(this, "Welcome to PrepMate!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -64,6 +67,12 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnGuest.setOnClickListener {
+            auth.signOut()
+            googleSignInClient.signOut()
+
+            // حفظ حالة الزائر
+            getSharedPreferences("AppPrefs", Context.MODE_PRIVATE).edit().putBoolean("isGuest", true).apply()
+
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -99,6 +108,9 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    // إلغاء حالة الزائر عند التسجيل بجوجل بنجاح
+                    getSharedPreferences("AppPrefs", Context.MODE_PRIVATE).edit().putBoolean("isGuest", false).apply()
+
                     Toast.makeText(this, "Google Sign-In Successful", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
