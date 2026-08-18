@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/bg_white">
 
-    <!-- الشريط العلوي (Top App Bar) -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_white"
-        app:elevation="0dp"> <!-- لغاء الظل عشان يندمج مع الخلفية -->
+        app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/topToolbar"
@@ -19,7 +18,6 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/bg_white">
 
-            <!-- النص اللي في المنتصف -->
             <TextView
                 android:id="@+id/tvPageTitle"
                 android:layout_width="wrap_content"
@@ -33,7 +31,6 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- ======= التعديل هنا: استخدام FragmentContainerView للـ Navigation ======= -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -43,7 +40,6 @@
         app:navGraph="@navigation/nav_graph"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:paddingBottom="90dp" />
-    <!-- ========================================================================= -->
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
@@ -72,7 +68,6 @@
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
-    <!-- زرار الـ Home العائم -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabHome"
         android:layout_width="wrap_content"
