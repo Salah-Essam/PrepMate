@@ -1,59 +1,151 @@
 package com.example.prepmate
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.prepmate.adapter.AreaAdapter
+import com.example.prepmate.adapter.CategoryAdapter
+import com.example.prepmate.model.Area
+import com.example.prepmate.model.Category
+import com.example.prepmate.model.Meal
+import com.example.prepmate.presenter.HomePresenter
+import com.example.prepmate.presenter.HomeView
+import com.example.prepmate.repository.HomeRepository
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class HomeFragment : Fragment(), HomeView {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var presenter: HomePresenter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private lateinit var mealImage: ImageView
+    private lateinit var mealName: TextView
+    private lateinit var mealCategory: TextView
+    private lateinit var mealArea: TextView
+
+    private lateinit var categoriesAdapter: CategoryAdapter
+    private lateinit var areasAdapter: AreaAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        return inflater.inflate(
+            R.layout.fragment_home,
+            container,
+            false
+        )
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initializeViews(view)
+        initializeRecyclerViews(view)
+
+        presenter = HomePresenter(
+            this,
+            HomeRepository()
+        )
+
+        presenter.loadHomeData()
+    }
+
+    private fun initializeViews(view: View) {
+
+        mealImage = view.findViewById(R.id.ivMealImage)
+        mealName = view.findViewById(R.id.tvMealName)
+        mealCategory = view.findViewById(R.id.tvMealCategory)
+        mealArea = view.findViewById(R.id.tvMealArea)
+    }
+
+    private fun initializeRecyclerViews(view: View) {
+
+        val categoriesRecyclerView =
+            view.findViewById<RecyclerView>(R.id.rvCategories)
+
+        val areasRecyclerView =
+            view.findViewById<RecyclerView>(R.id.rvAreas)
+
+        categoriesAdapter = CategoryAdapter()
+        areasAdapter = AreaAdapter()
+
+        categoriesRecyclerView.apply {
+
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+
+            adapter = categoriesAdapter
+
+            isNestedScrollingEnabled = false
+        }
+
+        areasRecyclerView.apply {
+
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+
+            adapter = areasAdapter
+
+            isNestedScrollingEnabled = false
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    override fun showRandomMeal(meal: Meal) {
+
+        mealName.text = meal.strMeal
+
+        mealCategory.text =
+            "Category: ${meal.strCategory ?: "Unknown"}"
+
+        mealArea.text =
+            "Country: ${meal.strArea ?: "Unknown"}"
+
+        Glide.with(this)
+            .load(meal.strMealThumb)
+            .into(mealImage)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun showCategories(
+        categories: List<Category>
+    ) {
+
+        categoriesAdapter.updateCategories(categories)
+    }
+
+    override fun showAreas(
+        areas: List<Area>
+    ) {
+
+        areasAdapter.updateAreas(areas)
+    }
+
+    override fun showError(message: String) {
+
+        // We will replace this with a proper UI error message later.
+        // For now, it prevents the application from crashing.
+    }
+
+    override fun onDestroyView() {
+
+        presenter.clear()
+
+        super.onDestroyView()
     }
 }
