@@ -1,7 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme for Dark Mode. -->
     <style name="Base.Theme.PrepMate" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- الألوان الأساسية (ممكن تسيب الأخضر زي ما هو عشان يحافظ على هوية التطبيق) -->
+        <item name="colorPrimary">@color/primary_green</item>
+        <item name="colorPrimaryVariant">@color/primary_green_dark</item>
+        <item name="colorOnPrimary">@color/bg_white</item>
+
+        <!-- ألوان الخلفيات والنصوص للوضع الليلي -->
+        <item name="android:windowBackground">#121212</item> <!-- لون الخلفية الأساسي (أسود مطفي) -->
+        <item name="colorSurface">#1E1E1E</item> <!-- لون الطبقات فوق الخلفية -->
+        <item name="colorOnSurface">#FFFFFF</item> <!-- لون النصوص (أبيض عشان يبان على الغامق) -->
+        <item name="colorSurfaceVariant">#2C2C2C</item> <!-- لون الكروت في السيرش (رمادي غامق) -->
     </style>
+
+    <style name="Theme.PrepMate" parent="Base.Theme.PrepMate" />
 </resources>

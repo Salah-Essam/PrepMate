@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "863690293636",
+    "project_id": "prepmate-99e02",
+    "storage_bucket": "prepmate-99e02.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863690293636:android:3a4d6335dc58f4494c9dd1",
+        "android_client_info": {
+          "package_name": "com.example.prepmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "863690293636-vp20521qhf5df1ikf47ll2b7sj0rlf0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.prepmate",
+            "certificate_hash": "927ce4ac2d8e3f2dfc7fba956ce987e19ccea18c"
+          }
+        },
+        {
+          "client_id": "863690293636-nbo97vsm9c36jidjeclumrr346oenre0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0wW3TbxtGkE2dkY-v20kMf5qfsTJLCM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "863690293636-nbo97vsm9c36jidjeclumrr346oenre0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
