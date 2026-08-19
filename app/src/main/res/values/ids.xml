@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="icon_bookmark" type="id" />
+    <item name="layout_rating" type="id" />
+    <item name="text_time" type="id" />
+    <item name="text_author" type="id" />
+    <item name="text_title" type="id" />
+    <item name="image_recipe" type="id" />
+</resources>

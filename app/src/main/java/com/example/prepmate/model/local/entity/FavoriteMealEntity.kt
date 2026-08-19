@@ -1,18 +1,17 @@
-package com.example.prepmate.model
+package com.example.prepmate.model.local.entity
 
-data class MealResponse(
-    val meals: List<Meal>
-)
-data class Meal(
-    val idMeal: String,
-    val strMeal: String,
-    val strDrinkAlternate: String?,
-    val strCategory: String?,
-    val strArea: String?,
-    val strInstructions: String?,
-    val strMealThumb: String?,
-    val strTags: String?,
-    val strYoutube: String?,
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "favorite_meals")
+data class FavoriteMealEntity(
+    @PrimaryKey val id: String,
+    val name: String,
+    val category: String,
+    val originArea: String,
+    val instructions: String,
+    val imageUrl: String,
+    val youtubeUrl: String,
     val strIngredient1: String?,
     val strIngredient2: String?,
     val strIngredient3: String?,
