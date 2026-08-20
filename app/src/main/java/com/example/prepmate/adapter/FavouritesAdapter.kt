@@ -46,8 +46,7 @@ class FavouritesAdapter(private var mealsList : List<FavoriteMealEntity>)
         return mealsList.size
     }
 
-
-
+    fun updateData(mealList: List<FavoriteMealEntity>) {}
 
 
 }
