@@ -1,5 +1,6 @@
 package com.example.prepmate
 
+import FavoriteViewModelFactory
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
@@ -11,17 +12,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepmate.adapter.FavouritesAdapter
 import com.example.prepmate.model.local.entity.FavoriteMealEntity
-import com.example.prepmate.presenter.Favorite.FavoriteContract
-import com.example.prepmate.presenter.Favorite.FavoritePresenter
-import org.jetbrains.annotations.Contract
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
+import com.example.prepmate.model.local.dao.FavouriteMealDAO
+import com.example.prepmate.model.local.database.AppDataBase
+import com.example.prepmate.repository.FavoriteRepository
+import com.example.prepmate.viewmodel.FavoriteViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 
-class FavoritesFragment : Fragment() , FavoriteContract.View{
+class FavoritesFragment : Fragment()  {
 
-    lateinit var presenter:FavoritePresenter
+
+    val viewModel : FavoriteViewModel by viewModels {
+        val database = AppDataBase.getInstance(requireContext())
+        val dao = database.favoriteMealDao
+        val repository = FavoriteRepository(dao)
+        FavoriteViewModelFactory(repository)
+    }
+
+
     lateinit var adapter: FavouritesAdapter
     lateinit var recyclerView: RecyclerView
     override fun onCreateView(
@@ -43,10 +55,12 @@ class FavoritesFragment : Fragment() , FavoriteContract.View{
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById<RecyclerView>(R.id.favorites_recycleview)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = FavouritesAdapter(emptyList())
 
-        presenter.getFavoriteMeals()
-    // دالة لبناء واجهة الزائر برمجياً
+        viewModel.mealList.observe(viewLifecycleOwner){
+            mealList -> adapter = FavouritesAdapter(mealList)
+        }
+
+    }
     private fun createGuestView(): View {
         val context = requireContext()
         val layout = LinearLayout(context).apply {
@@ -87,10 +101,4 @@ class FavoritesFragment : Fragment() , FavoriteContract.View{
         return layout
     }
 
-    override fun showFavoriteMeals(meals: List<FavoriteMealEntity>) {
-        adapter.updateData(meals)
-    }
-
-
 }
-
