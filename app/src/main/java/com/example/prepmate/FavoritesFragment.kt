@@ -56,7 +56,9 @@ class FavoritesFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // تهيئة الأแดبتر بقائمة فارغة وربطه بالـ RecyclerView أولاً (من نسختك)
-        adapter = FavouritesAdapter(emptyList())
+        adapter = FavouritesAdapter(emptyList() , removeMeal = {
+            favoriteMealEntity -> viewModel.removeFavoriteMeal(favoriteMealEntity)
+        })
         recyclerView.adapter = adapter
 
         // مراقبة البيانات القادمة من الـ ViewModel وتحديث الأแดبتر (النظام الجديد)

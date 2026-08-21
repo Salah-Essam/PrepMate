@@ -14,9 +14,8 @@ class FavoriteRepository(val favouriteMealDAO: FavouriteMealDAO) {
         return favouriteMealDAO.addFavoriteMeal(favouriteMeal)
     }
 
-    fun removeFavoriteMeal(meal : Meal) : Completable{
-        val favouriteMeal = meal.toFavoriteEntity()
-        return favouriteMealDAO.removeFavoriteMeal(favouriteMeal)
+    fun removeFavoriteMeal(meal : FavoriteMealEntity) : Completable{
+        return favouriteMealDAO.removeFavoriteMeal(meal)
     }
 
     fun getAllFavoriteMeal() : Flowable<List<FavoriteMealEntity>>{

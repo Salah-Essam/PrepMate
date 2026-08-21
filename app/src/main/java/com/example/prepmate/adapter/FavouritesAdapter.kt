@@ -3,6 +3,7 @@ package com.example.prepmate.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,13 +13,14 @@ import com.example.prepmate.model.Meal
 import com.example.prepmate.model.local.entity.FavoriteMealEntity
 import io.reactivex.rxjava3.core.Flowable
 
-class FavouritesAdapter(private var mealsList : List<FavoriteMealEntity>)
+class FavouritesAdapter(private var mealsList : List<FavoriteMealEntity> , private val removeMeal : (FavoriteMealEntity) -> Unit)
     : RecyclerView.Adapter<FavouritesAdapter.ViewHolder>() {
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val mealImage : ImageView = view.findViewById(R.id.image_meal)
         val mealTitle : TextView = view.findViewById(R.id.text_meal_name)
         val mealCategory : TextView = view.findViewById(R.id.text_category)
         val mealArea: TextView = view.findViewById(R.id.text_area)
+        val favoriteMinus : ImageButton = view.findViewById(R.id.button_unfavorite)
     }
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -37,6 +39,10 @@ class FavouritesAdapter(private var mealsList : List<FavoriteMealEntity>)
         holder.mealCategory.text = currentMeal.category
         holder.mealArea.text = currentMeal.originArea
 
+        holder.favoriteMinus.setOnClickListener {
+            removeMeal(currentMeal)
+        }
+
         Glide.with(holder.itemView.context)
             .load(currentMeal.imageUrl)
             .into(holder.mealImage)
@@ -46,7 +52,9 @@ class FavouritesAdapter(private var mealsList : List<FavoriteMealEntity>)
         return mealsList.size
     }
 
-    fun updateData(mealList: List<FavoriteMealEntity>) {}
+    fun updateData(newMealList: List<FavoriteMealEntity>) {
+        mealsList = newMealList
+    }
 
 
 }
