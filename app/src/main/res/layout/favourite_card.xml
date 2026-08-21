@@ -86,7 +86,7 @@
             android:textColor="#B3FFFFFF"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/icon_bookmark"
+            app:layout_constraintEnd_toStartOf="@+id/button_unfavorite"
             app:layout_constraintStart_toStartOf="parent" />
 
         <!-- 6. Meal Title (Maps to strMeal) -->
